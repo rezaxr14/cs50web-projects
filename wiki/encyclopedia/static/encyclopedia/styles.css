@@ -1,0 +1,33 @@
+body {
+    background-color: #f8f9fa;
+}
+.sidebar {
+    background-color: #ffffff;
+    padding: 20px;
+    border-right: 1px solid #dee2e6;
+    height: 100vh;
+}
+.sidebar h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+.sidebar a {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #0d6efd;
+    text-decoration: none;
+}
+.sidebar a:hover {
+    text-decoration: underline;
+}
+.main-content {
+    padding: 30px;
+}
+.entry-content {
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.nv-title{
+    margin-bottom: 10px;
+}

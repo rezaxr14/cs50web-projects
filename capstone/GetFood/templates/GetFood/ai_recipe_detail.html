@@ -1,0 +1,83 @@
+{% extends "GetFood/layout.html" %}
+{% block title %}{{ recipe_name }} - AI Recipe{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto mt-10">
+  <h1 class="text-3xl font-bold text-orange-700 mb-6">{{ recipe_name }}</h1>
+
+  <div id="recipe-container" class="bg-white shadow-lg rounded-2xl p-6">
+    <p id="loading" class="text-gray-600">Loading recipe details… ⏳</p>
+  </div>
+
+  <div class="mt-6">
+    <a href="{% url 'ai_suggestions' %}" class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600">
+       ← Back to Suggestions
+    </a>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+    const container = document.getElementById("recipe-container");
+    const loading = document.getElementById("loading");
+
+    async function fetchRecipeDetail(retryCount = 3, delay = 2000) {
+        try {
+            const url = "{% url 'ai_recipe_detail_api' recipe_name='__REPLACE__' %}"
+                .replace('__REPLACE__', encodeURIComponent("{{ recipe_name }}"));
+
+            const response = await fetch(url);
+            const data = await response.json();
+
+            if (data.error) throw new Error(data.error);
+
+            // Hide loading
+            loading.style.display = "none";
+            container.classList.remove("hidden");
+
+            // Build ingredients list
+            const ingredients = data.ingredients
+                ?.map(i => `<li>${i.amount} ${i.unit} ${i.name}</li>`)
+                .join("") || "<li>No ingredients found</li>";
+
+            // Build steps (support object or string)
+            const steps = data.instructions
+                ?.map(s => `<li>${typeof s === "string" ? s : s.step}</li>`)
+                .join("") || "<li>No instructions available</li>";
+
+            container.innerHTML = `
+                ${data.image ? `<img src="${data.image}" alt="${data.name}" class="rounded-xl w-full mb-6 object-cover">` : ""}
+                <h1 class="text-3xl font-bold text-orange-700 mb-2">${data.name || "Recipe"}</h1>
+                <p class="text-gray-600 mb-6">${data.description || ""}</p>
+
+                <h2 class="text-xl font-semibold mt-4">🧂 Ingredients</h2>
+                <ul class="list-disc list-inside text-gray-700 mb-4">${ingredients}</ul>
+
+                <h2 class="text-xl font-semibold mt-4">👨‍🍳 Instructions</h2>
+                <ol class="list-decimal list-inside text-gray-700 mb-4">${steps}</ol>
+
+                ${data.time_minutes ? `<p class="text-gray-500 mt-2">⏱ Estimated Time: ${data.time_minutes} minutes</p>` : ""}
+            `;
+        } catch (err) {
+            if (retryCount > 0) {
+                loading.innerHTML = `<p class="text-orange-600">Retrying... (${retryCount})</p>`;
+                setTimeout(() => fetchRecipeDetail(retryCount - 1, delay), delay);
+            } else {
+                loading.innerHTML = `
+                    <p class="text-red-500 mb-2">Failed to load recipe details: ${err.message}</p>
+                    <button id="retry-btn" class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600">
+                        Retry
+                    </button>
+                `;
+                document.getElementById("retry-btn").addEventListener("click", () => {
+                    loading.innerHTML = `<p class="text-orange-600">Retrying...</p>`;
+                    fetchRecipeDetail(3, delay);
+                });
+            }
+        }
+    }
+
+    await fetchRecipeDetail();
+});
+</script>
+{% endblock %}

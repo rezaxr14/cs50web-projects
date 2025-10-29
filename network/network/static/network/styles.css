@@ -1,0 +1,156 @@
+body {
+    background-color: #f8f9fa; /* Light grey background for a soft look */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: #333;
+}
+
+.navbar {
+    border-bottom: 1px solid #e7e7e7;
+    background-color: #ffffff !important; /* Force a clean white background */
+    padding: 0.75rem 1.5rem;
+}
+
+.navbar-brand {
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: #007bff !important; /* A nice blue for branding */
+}
+
+.nav-link {
+    color: #555 !important;
+    font-weight: 500;
+    padding: 0.5rem 1rem !important;
+    transition: color 0.2s ease-in-out;
+}
+
+.nav-link:hover {
+    color: #007bff !important;
+}
+
+.nav-link strong {
+    color: #28a745;
+}
+
+.body {
+    padding: 20px;
+    max-width: 900px;
+    margin: 20px auto;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.post {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    padding: 15px;
+}
+
+.post h5 {
+    margin-bottom: 0.5rem;
+}
+
+.post .card-text {
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-info {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+}
+
+textarea {
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+textarea:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+    outline: none;
+}
+
+.pagination {
+    justify-content: center;
+    margin-top: 2rem;
+}
+h2 {
+    font-weight: 300;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+    margin-bottom: 30px;
+    color: #555;
+}
+
+.empty-message {
+    text-align: center;
+    padding: 50px;
+    color: #888;
+    background-color: #fdfdfd;
+    border: 1px dashed #ddd;
+    border-radius: 8px;
+}
+.profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.profile-header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    font-weight: 300;
+}
+
+.profile-header .btn {
+    margin-left: auto;
+}
+
+.profile-stats {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.profile-stats-item {
+    font-size: 1.1rem;
+    color: #555;
+}
+
+.profile-stats-item strong {
+    color: #333;
+    font-weight: 600;
+}
+
+h4 {
+    font-weight: 600;
+    color: #333;
+    margin-top: 30px;
+}
+.new-post-form {
+    background-color: #ffffff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.new-post-form h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #333;
+}

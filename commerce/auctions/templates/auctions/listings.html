@@ -1,0 +1,88 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+
+{% block body %}
+    {% if listing %}
+        <div class="listing-container">
+            <h3 class="listing-title">{{ listing.title }}</h3>
+
+            {% if listing.image_url %}
+                <img src="{{ listing.image_url }}" alt="{{ listing.title }}" class="img-fluid listing-image">
+            {% endif %}
+
+            {% if listing.closed %}
+                <h2 class="closed-message">This auction is now closed.</h2>
+            {% endif %}
+
+            {% if user.is_authenticated %}
+                {% if not listing.closed %}
+                    {% if user == listing.maker %}
+                        <form method="POST" action="{% url 'listing' listing.id %}">
+                            {% csrf_token %}
+                            <button name="close" class="link-button">Close the Listing Auction</button>
+                        </form>
+                    {% endif %}
+                {% elif user == listing.highest_bid_obj.user %}
+                    <h1 class="winner-message">YOU HAVE WON THE AUCTION</h1>
+                {% endif %}
+
+                {% if user in listing.watching_users.all %}
+                    <form method="POST" action="{% url 'listing' listing.id %}">
+                        {% csrf_token %}
+                        <button name="remove" class="link-button">Remove from wishlist</button>
+                    </form>
+                {% else %}
+                    <form method="POST" action="{% url 'listing' listing.id %}">
+                        {% csrf_token %}
+                        <button name="add" class="link-button">Add to wishlist</button>
+                    </form>
+                {% endif %}
+
+                {% if not listing.closed %}
+                    <form method="POST" action="{% url 'listing' listing.id %}" class="bid-form">
+                        {% csrf_token %}
+                        <input type="number" step="0.01" name="bid_amount" placeholder="Enter your bid" required>
+                        <button class="link-button">Make a Bid</button>
+                    </form>
+                {% endif %}
+            {% endif %}
+
+            <div class="listing-details">
+                <strong>Starting/Highest Bid:</strong> ${{ listing.highest_bid }}<br>
+                <strong>Starting Bid:</strong> ${{ listing.starting_bid }}<br>
+                <strong>Category:</strong> {{ listing.category|title }}
+            </div>
+
+            <div class="listing-poster">
+                <strong>Posted by:</strong> {{ listing.maker.username }}
+            </div>
+
+            <p class="listing-description">{{ listing.description }}</p>
+            <p class="listing-meta">Highest bidder: {{ listing.highest_bid_obj.user }}</p>
+            <p class="listing-meta">Current user: {{ user.username }}</p>
+
+            {% if user.is_authenticated %}
+                <form action="{% url 'listing' listing.id %}" method="post" class="comment-form">
+                    {% csrf_token %}
+                    <textarea name="content" rows="5" placeholder="Write Your Comment Here!" class="comment-textarea"></textarea>
+                    <button class="link-button">Send The Comment</button>
+                </form>
+            {% endif %}
+        </div>
+
+        {% for comment in listing.comments.all %}
+            <div class="comment">
+                <p class="comment-user">User: {{ comment.user }}</p>
+                <p class="comment-content">{{ comment.content }}</p>
+            </div>
+        {% empty %}
+            <div class="no-comments">
+                <p>No comments have been posted yet. Please <a href="{% url 'login' %}">login</a> to post comments.</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="listing-container">
+            <p>Nothing to show</p>
+        </div>
+    {% endif %}
+{% endblock %}

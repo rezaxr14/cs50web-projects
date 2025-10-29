@@ -1,0 +1,23 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block body %}
+    {% if user.is_authenticated %}
+        <div class="new-post-form">
+            <h3>New Post</h3>
+            <form>
+                {% csrf_token %}
+                <textarea id='poster' name="content" rows="4" placeholder="What's happening?"></textarea>
+                <button id="sendNewPost" type="button" class="btn btn-primary">Post</button>
+            </form>
+        </div>
+    {% endif %}
+
+    <h2>All Posts</h2>
+
+    <div id="posts-js"></div>
+
+    <nav id="pagination-controls" class="mt-3"></nav>
+
+    <script defer src="{% static 'network/script.js' %}"></script>
+{% endblock %}

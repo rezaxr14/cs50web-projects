@@ -1,0 +1,19 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+
+{% block body %}
+<div class="create-listing-container">
+    {% if user.is_authenticated %}
+        <p class="auth-message">
+            Signed in as <strong>{{ user.username }}</strong>.
+        </p>
+        <form action="{% url 'create' %}" method="post" class="create-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Create Listing" class="submit-button">
+        </form>
+    {% else %}
+        <p class="auth-message">Not signed in.</p>
+    {% endif %}
+</div>
+{% endblock %}

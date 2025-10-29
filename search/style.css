@@ -1,0 +1,147 @@
+body {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fcfcfc;
+}
+
+.nav-links {
+    text-align: right;
+    padding: 20px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #333;
+    margin-left: 15px;
+    font-size: 14px;
+}
+
+.nav-links a:hover {
+    color: #007bff;
+    text-decoration: underline;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+}
+
+.logo {
+    font-size: 80px;
+    font-weight: bold;
+    color: #ff9900;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px #ffc966;
+}
+
+.logo-subtext {
+    color: #4da6ff;
+    font-size: 18px;
+    position: relative;
+    left: 5px;
+    top: -10px;
+}
+
+.search-bar-container {
+    text-align: center;
+}
+
+.search-bar {
+    width: 560px;
+    padding: 12px 20px;
+    border-radius: 30px; 
+    border: 1px solid #dfe1e5;
+    font-size: 16px;
+    outline: none;
+}
+
+.search-bar:hover, .search-bar:focus {
+    box-shadow: 0 2px 8px rgba(0,0,0,.2);
+    border-color: transparent;
+}
+
+.search-buttons {
+    margin-top: 28px;
+    display: flex;
+    justify-content: center;
+}
+
+.search-btn {
+    background-color: #f0f0f0;
+    border: 1px solid #f0f0f0;
+    border-radius: 6px;
+    color: #555;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    font-size: 14px;
+    margin: 11px 4px;
+    padding: 10px 16px;
+    text-align: center;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.search-btn:hover {
+    box-shadow: 0 1px 2px rgba(0,0,0,.15);
+    border: 1px solid #ccc;
+    color: #222;
+}
+
+.advanced-header {
+    color: #6a0dad; 
+    font-size: 22px;
+    font-weight: bold;
+    margin: 25px 40px;
+}
+
+.advanced-container {
+    padding: 20px 40px;
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.form-label {
+    width: 220px; 
+    font-size: 14px;
+    color: #333;
+}
+
+.advanced-input {
+    width: 350px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.advanced-input:focus {
+    border: 1px solid #4169E1;
+    outline: none;
+    box-shadow: 0 0 5px rgba(65, 105, 225, 0.5);
+}
+
+.submit-row {
+    justify-content: flex-end;
+}
+
+.advanced-submit-btn {
+    background-color: #4169E1; 
+    color: #fff;
+    border: 1px solid #3355b3;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+.advanced-submit-btn:hover {
+    background-color: #3658bc;
+}

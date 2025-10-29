@@ -1,0 +1,87 @@
+{% extends "GetFood/layout.html" %}
+{% block title %}AI Chef Suggestions{% endblock %}
+
+{% block content %}
+<h1 class="text-3xl font-bold text-orange-700 mb-6">🍳 AI Chef Suggestions</h1>
+
+<div id="loading" class="text-gray-600">Generating ideas… please wait ⏳</div>
+<div id="recipes-container" class="hidden"></div>
+
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+    const container = document.getElementById("recipes-container");
+    const loading = document.getElementById("loading");
+
+    async function startAISuggestions() {
+        try {
+            const response = await fetch("{% url 'ai_suggestions_api' %}");
+            const data = await response.json();
+
+            if (data.error) throw new Error(data.error);
+
+            if (data.status === "done") {
+                displayRecipes(data.recipes);
+                return;
+            }
+
+            const taskId = data.task_id;
+            if (!taskId) {
+                // If already cached, display immediately
+                displayRecipes(data.recipes);
+                return;
+            }
+            loading.textContent = "AI is cooking up ideas... 🍲";
+            pollTaskStatus(taskId);
+
+        } catch (err) {
+            showError(`Failed to start AI task: ${err.message}`);
+        }
+    }
+
+    async function pollTaskStatus(taskId, retries = 30, delay = 5000) {
+        for (let i = 0; i < retries; i++) {
+            const res = await fetch(`/ai/task-status/${taskId}/`);
+            const data = await res.json();
+
+            if (data.status === "done") {
+                displayRecipes(data.recipes);
+                return;
+            }
+            loading.textContent = `Still thinking... (${i + 1}/${retries}) 🧠`;
+            await new Promise(r => setTimeout(r, delay));
+        }
+        showError("Timeout: AI took too long to respond. 😕");
+    }
+
+    function showError(msg) {
+        loading.innerHTML = `
+            <p class="text-red-500">${msg}</p>
+            <button id="retry-btn" class="mt-2 bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600">
+                Retry
+            </button>`;
+        document.getElementById("retry-btn").addEventListener("click", startAISuggestions);
+    }
+
+    function displayRecipes(recipes) {
+        loading.style.display = "none";
+        container.classList.remove("hidden");
+        container.innerHTML = `
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                ${recipes.map(r => `
+                    <a href="/ai/recipe/${encodeURIComponent(r.name)}/"
+                        class="block bg-white rounded-2xl shadow-lg hover:shadow-2xl transition p-4">
+                        <img src="${r.image}" alt="${r.name}" class="rounded-xl mb-4 h-40 w-full object-cover">
+                        <h3 class="text-lg font-bold text-orange-700">${r.name}</h3>
+                        <p class="text-gray-600">${r.short_description}</p>
+                        <div class="mt-2 text-sm text-gray-500">
+                            <span>🍽 ${r.cuisine} | ⚙️ ${r.difficulty}</span>
+                        </div>
+                    </a>
+                `).join("")}
+            </div>`;
+    }
+
+    startAISuggestions();
+});
+</script>
+{% endblock %}

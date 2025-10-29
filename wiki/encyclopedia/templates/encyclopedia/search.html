@@ -1,0 +1,19 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+Search
+{% endblock %}
+
+
+{% block body %}
+<h1>Search results for "{{ query }}"</h1>
+{% if results %}
+    <div class="list-group">
+    {% for r in results %}
+        <a href="{% url 'encyclopedia:entry' title=r %}" class="list-group-item list-group-item-action">{{ r }}</a>
+    {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-warning mt-3">No entries found.</div>
+{% endif %}
+{% endblock %}

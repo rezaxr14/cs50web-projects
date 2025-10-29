@@ -1,0 +1,178 @@
+{% extends 'network/layout.html' %}
+
+{% block body %}
+    
+    <div class="profile-header">
+        <h1>{{ model.username }}</h1>
+        {% if model != user %}
+            {% if is_following %}
+                <button id="follow-btn" class="btn btn-secondary">Unfollow</button>
+            {% else %}
+                <button id="follow-btn" class="btn btn-primary">Follow</button>
+            {% endif %}
+        {% endif %}
+    </div>
+
+    <div class="profile-stats">
+        <div class="profile-stats-item">
+            <strong><span id="follower-count">{{ model.follower_relations.count }}</span></strong> Followers
+        </div>
+        <div class="profile-stats-item">
+            <strong>{{ model.following_relations.count }}</strong> Following
+        </div>
+    </div>
+
+    <hr>
+    <h4>Posts by {{ model.username }}</h4>
+
+    <div id="user-posts"></div>
+    <nav id="pagination-controls" class="mt-3"></nav>
+
+
+    <script>
+        const followButton = document.getElementById('follow-btn');
+        if (followButton) {
+            followButton.addEventListener('click', () => {
+                const profileUsername = "{{ model.username }}";
+                fetch(`/follow/${profileUsername}`, {
+                    method: 'POST',
+                    headers: { 'X-CSRFToken': getCSRFToken() }
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.is_following) {
+                        followButton.innerText = 'Unfollow';
+                        followButton.className = 'btn btn-secondary';
+                    } else {
+                        followButton.innerText = 'Follow';
+                        followButton.className = 'btn btn-primary';
+                    }
+                    document.getElementById('follower-count').innerText = result.new_follower_count;
+                });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchUserPosts("{{ model.username }}", 1);
+        });
+
+        function fetchUserPosts(username, pageNumber) {
+            const postsContainer = document.getElementById("user-posts");
+            const paginationContainer = document.getElementById("pagination-controls");
+            const currentUser = "{{ user.username }}";
+
+            fetch(`/users/${username}/posts?page=${pageNumber}`)
+                .then(res => res.json())
+                .then(data => {
+                    postsContainer.innerHTML = "";
+                    paginationContainer.innerHTML = "";
+
+                    data.posts.forEach(post => {
+                        const postElement = document.createElement("div");
+                        postElement.classList.add("post", "card", "mb-3");
+                        postElement.innerHTML = `
+                            <div class="card-body" id="post-body-${post.id}">
+                                <p class="card-text">${post.content}</p>
+                                <small class="text-muted">Posted on: ${post.date_posted}</small>
+                                
+                                <div class="mt-2">
+                                    <button class="btn btn-sm like-btn ${post.is_liked_by_user ? 'btn-primary' : 'btn-outline-primary'}" data-post-id="${post.id}">
+                                        ${post.is_liked_by_user ? 'Unlike' : 'Like'}
+                                    </button>
+                                    <span id="like-count-${post.id}">${post.likes}</span> Likes
+                                </div>
+                                
+                                ${
+                                    post.author === currentUser ? `<button class="btn btn-sm btn-info edit-btn mt-2" data-post-id="${post.id}">Edit</button>` : ''
+                                }
+                            </div>
+                        `;
+                        postsContainer.appendChild(postElement);
+                    });
+                    
+                    addEventListeners();
+                    
+                    const paginationList = document.createElement('ul');
+                    paginationList.classList.add('pagination');
+                    if (data.has_previous) {
+                        paginationList.innerHTML += `<li class="page-item"><a class="page-link" href="#" onclick="event.preventDefault(); fetchUserPosts('${username}', ${data.previous_page_number});">Previous</a></li>`;
+                    } else {
+                        paginationList.innerHTML += `<li class="page-item disabled"><span class="page-link">Previous</span></li>`;
+                    }
+                    if (data.has_next) {
+                        paginationList.innerHTML += `<li class="page-item"><a class="page-link" href="#" onclick="event.preventDefault(); fetchUserPosts('${username}', ${data.next_page_number});">Next</a></li>`;
+                    } else {
+                        paginationList.innerHTML += `<li class="page-item disabled"><span class="page-link">Next</span></li>`;
+                    }
+                    paginationContainer.appendChild(paginationList);
+                });
+        }
+
+        function addEventListeners() {
+            document.querySelectorAll('.like-btn').forEach(button => {
+                button.onclick = () => {
+                    const postId = button.dataset.postId;
+                    fetch(`/posts/${postId}/like`, {
+                        method: 'POST',
+                        headers: { 'X-CSRFToken': getCSRFToken() }
+                    })
+                    .then(response => response.json())
+                    .then(result => {
+                        document.getElementById(`like-count-${postId}`).innerText = result.like_count;
+                        if (result.is_liked) {
+                            button.innerText = 'Unlike';
+                            button.classList.replace('btn-outline-primary', 'btn-primary');
+                        } else {
+                            button.innerText = 'Like';
+                            button.classList.replace('btn-primary', 'btn-outline-primary');
+                        }
+                    });
+                };
+            });
+
+            document.querySelectorAll('.edit-btn').forEach(button => {
+                button.onclick = () => editPost(button.dataset.postId);
+            });
+        }
+        
+        function editPost(postId) {
+            const postBody = document.getElementById(`post-body-${postId}`);
+            const postContent = postBody.querySelector('.card-text');
+            const originalContent = postContent.innerText;
+
+            postBody.innerHTML = `
+                <textarea class="form-control" id="textarea-${postId}">${originalContent}</textarea>
+                <button class="btn btn-sm btn-success mt-2 save-btn">Save</button>
+                <button class="btn btn-sm btn-secondary mt-2 cancel-btn">Cancel</button>
+            `;
+
+            postBody.querySelector('.save-btn').onclick = () => {
+                const newContent = document.getElementById(`textarea-${postId}`).value;
+                fetch(`/posts/${postId}`, {
+                    method: 'PUT',
+                    headers: { 'X-CSRFToken': getCSRFToken(), 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ content: newContent })
+                })
+                .then(response => {
+                    if (response.ok) fetchUserPosts("{{ model.username }}", 1);
+                });
+            };
+
+            postBody.querySelector('.cancel-btn').onclick = () => {
+                fetchUserPosts("{{ model.username }}", 1);
+            };
+        }
+
+        function getCSRFToken() {
+            const name = 'csrftoken';
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                cookie = cookie.trim();
+                if (cookie.startsWith(name + '=')) {
+                    return decodeURIComponent(cookie.substring(name.length + 1));
+                }
+            }
+            return null;
+        }
+    </script>
+{% endblock %}

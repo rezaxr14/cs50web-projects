@@ -1,0 +1,48 @@
+{% extends "GetFood/layout.html" %}
+
+{% block title %}{{ recipe.name }} - WhatToCook 🍴{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+
+    {% if recipe.image %}
+    <img src="{{ recipe.image.url }}" alt="{{ recipe.name }}" class="w-full h-64 object-cover">
+    {% else %}
+    <div class="w-full h-64 bg-orange-100 flex items-center justify-center text-orange-600 font-semibold">
+        No Image
+    </div>
+    {% endif %}
+
+    <div class="p-6">
+        <h1 class="text-3xl font-bold text-orange-700 mb-4">{{ recipe.name }}</h1>
+
+        {% if recipe.cooking_time %}
+        <p class="text-gray-600 mb-4">⏱️ Cooking Time: {{ recipe.cooking_time }} minutes</p>
+        {% endif %}
+
+        {% if recipe.description %}
+        <p class="text-gray-700 mb-4">{{ recipe.description }}</p>
+        {% endif %}
+
+        <h2 class="text-xl font-semibold text-orange-600 mb-2">Ingredients 📝</h2>
+        <ul class="list-disc list-inside mb-4">
+            {% for ri in recipe.recipeingredient_set.all %}
+            <li>{{ ri.quantity }} {{ ri.unit }} {{ ri.ingredient.name }}</li>
+            {% endfor %}
+        </ul>
+
+        {% if instructions_list %}
+        <h2 class="text-xl font-semibold text-orange-600 mb-2">Instructions 🍳</h2>
+        <ol class="list-decimal list-inside mb-4 space-y-1">
+            {% for step in instructions_list %}
+            <li>{{ step }}</li>
+            {% endfor %}
+        </ol>
+        {% endif %}
+
+        <a href="{% url 'index' %}" class="inline-block bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors mt-4">
+            ← Back to Home
+        </a>
+    </div>
+</div>
+{% endblock %}

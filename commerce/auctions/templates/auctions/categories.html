@@ -1,0 +1,18 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+
+{% block body %}
+<div class="category-list-container">
+    <ul class="category-list">
+        {% for category in categories %}
+            <li class="category-item">
+                <h3 class="category-title">
+                    <a href="{% url 'category' category %}" class="category-link">{{ category }}</a>
+                </h3>
+            </li>
+        {% empty %}
+            <li><h3 class="empty-message">No category has been implemented</h3></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

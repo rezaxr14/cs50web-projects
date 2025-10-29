@@ -1,0 +1,59 @@
+{% extends "GetFood/layout.html" %}
+
+{% block title %}Home - WhatToCook 🍴{% endblock %}
+
+{% block content %}
+<h1 class="text-4xl font-bold text-orange-700 mb-6">Discover Recipes 🍳</h1>
+
+{% if recipes %}
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for recipe in recipes %}
+    <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+        {% if recipe.image %}
+        <img src="{{ recipe.image.url }}" alt="{{ recipe.name }}" class="w-full h-48 object-cover">
+        {% else %}
+        <div class="w-full h-48 bg-orange-100 flex items-center justify-center text-orange-600 font-semibold">
+            No Image
+        </div>
+        {% endif %}
+
+        <div class="p-4">
+            <h2 class="text-xl font-bold text-orange-700 mb-2">{{ recipe.name }}</h2>
+            {% if recipe.cooking_time %}
+            <p class="text-gray-600 mb-2">⏱️ {{ recipe.cooking_time }} minutes</p>
+            {% endif %}
+            <p class="text-gray-700 mb-3">{{ recipe.description|truncatewords:20 }}</p>
+
+            <h3 class="font-semibold text-orange-600 mb-1">Ingredients:</h3>
+            <ul class="flex flex-wrap gap-2 mb-3">
+                {% for ri in recipe.recipeingredient_set.all %}
+                <li class="px-2 py-1 bg-orange-200 rounded-full text-orange-900 text-sm">
+                    {{ ri.quantity }} {{ ri.unit }} {{ ri.ingredient.name }}
+                </li>
+                {% endfor %}
+            </ul>
+
+            <a href="{% url 'recipe_detail' recipe.id %}" class="inline-block bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors">View Recipe</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+    <!-- Pagination -->
+<div class="flex justify-center mt-6 gap-4">
+  {% if recipes.has_previous %}
+    <a href="?page={{ recipes.previous_page_number }}" class="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600">← Prev</a>
+  {% endif %}
+{% if num_pages != 1 %}
+  <span class="px-4 py-2 bg-gray-200 rounded">
+    Page {{ recipes.number }} of {{ recipes.paginator.num_pages }}
+  </span>
+{% endif %}
+  {% if recipes.has_next %}
+    <a href="?page={{ recipes.next_page_number }}" class="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600">Next →</a>
+  {% endif %}
+</div>
+{% else %}
+<p class="text-gray-600">No recipes found 😢. Try adding some in the admin panel!</p>
+{% endif %}
+
+{% endblock %}

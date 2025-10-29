@@ -1,0 +1,320 @@
+/* General layout */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #343a40;
+    margin-bottom: 30px;
+}
+
+/* Navigation bar */
+.nav {
+    background-color: #343a40;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.nav-link {
+    color: #ffffff !important;
+    margin-right: 15px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #ffc107 !important;
+}
+
+/* Messages */
+.messages {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+}
+
+.messages li {
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.messages li.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.messages li.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.messages li.info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+/* Listing cards */
+.listing-card {
+    background-color: #fff;
+    border: 2px solid #007bff;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.1);
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.listing-card:hover {
+    box-shadow: 0 6px 18px rgba(0, 123, 255, 0.2);
+    transform: translateY(-3px);
+}
+
+.listing-card h3 {
+    margin-top: 0;
+    color: #007bff;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.listing-card img {
+    max-width: 50%;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+}
+
+.listing-card p {
+    margin-bottom: 5px;
+}
+
+/* Buttons */
+.link-button,
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.link-button:hover,
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Forms */
+form input[type="number"],
+form input[type="text"],
+form input[type="email"],
+form input[type="password"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+form button {
+    width: 100%;
+}
+
+/* Categories and listings */
+.category-container,
+.category-list-container,
+.listing-container,
+.create-listing-container {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+}
+
+.create-listing-container {
+    padding: 20px;
+    max-width: 600px;
+}
+
+.item-list,
+.category-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.item-card,
+.category-item {
+    margin-bottom: 15px;
+}
+
+.item-link,
+.category-link {
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.2s ease;
+}
+
+.category-link:hover{
+    color: #f3b449;
+    text-decoration: none;
+}
+
+
+.item-content {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 6px;
+    transition: box-shadow 0.3s ease;
+}
+
+.item-content:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.item-title,
+.category-title,
+.listing-title {
+    margin-top: 0;
+}
+
+.item-image,
+listing-image {
+    max-width: 300px;
+    display: block;
+    margin-bottom: 10px;
+    object-fit: cover;
+}
+
+.item-details,
+.item-poster,
+.listing-details,
+.listing-poster {
+    margin-bottom: 10px;
+}
+
+.item-description,
+listing-description {
+    margin-top: 10px;
+}
+
+.listing-meta {
+    font-size: 0.9em;
+    color: #555;
+}
+
+.closed-message {
+    color: red;
+    font-weight: bold;
+}
+
+.winner-message {
+    color: green;
+    font-weight: bold;
+}
+
+.bid-form input[type="number"] {
+    margin-right: 10px;
+    padding: 5px;
+}
+
+/* Comments */
+.comment-form {
+    margin-top: 20px;
+}
+
+.comment-textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+
+.comment {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+}
+
+.comment-user {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.comment-content {
+    margin: 0;
+}
+
+.no-comments,
+.empty-message {
+    margin-top: 15px;
+    font-style: italic;
+    color: #666;
+}
+
+/* Auth pages */
+.auth-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.auth-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.auth-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 1rem;
+}
+
+.auth-footer {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.create-form input[type="text"],
+.create-form input[type="number"],
+.create-form textarea,
+.create-form select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+}
+
+.submit-button {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.submit-button:hover {
+    background-color: #0056b3;
+}

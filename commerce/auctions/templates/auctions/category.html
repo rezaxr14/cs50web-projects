@@ -1,0 +1,35 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+
+{% block body %}
+<div class="category-container">
+    <ul class="item-list">
+        {% for item in items %}
+            <li class="item-card">
+                <a href="{% url 'listing' item.id %}" class="item-link" style="text-decoration: none; color:inherit;">
+                    <div class="item-content">
+                        <h3 class="item-title">{{ item.title }}</h3>
+
+                        {% if item.image_url %}
+                            <img src="{{ item.image_url }}" alt="{{ item.title }}" class="item-image">
+                        {% endif %}
+
+                        <div class="item-details">
+                            <strong>Starting/Highest Bid:</strong> ${{ item.highest_bid }}<br>
+                            <strong>Category:</strong> {{ item.category|title }}
+                        </div>
+
+                        <div class="item-poster">
+                            <strong>Posted by:</strong> {{ item.maker.username }}
+                        </div>
+
+                        <p class="item-description">{{ item.description }}</p>
+                    </div>
+                </a>
+            </li>
+        {% empty %}
+            <li><h3>No items have been put in this category.</h3></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
