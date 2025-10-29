@@ -6,10 +6,10 @@
 
 **🖼️ Screenshots:**
 
-* *Screenshot 1: Homepage* ![Homepage](/media/readme_images/homepage.png)
-* *Screenshot 2: AI Recipe Suggestions*![AI Recipe Suggestions](/media/readme_images/AI%20Recipe%20Suggestions.png)
-* *Screenshot 3: Pantry Management*![Homepage](/media/readme_images/Pantry%20Management.png)
-* *Screenshot 4: Recipe Details Page*![Homepage](/media/readme_images/Recipe%20Details%20Page.png)
+* *Screenshot 1: Homepage* ![Homepage](./media/readme_images/homepage.png)
+* *Screenshot 2: AI Recipe Suggestions*![AI Recipe Suggestions](./media/readme_images/AI%20Recipe%20Suggestions.png)
+* *Screenshot 3: Pantry Management*![Homepage](./media/readme_images/Pantry%20Management.png)
+* *Screenshot 4: Recipe Details Page*![Homepage](./media/readme_images/Recipe%20Details%20Page.png)
 
 ---
 
